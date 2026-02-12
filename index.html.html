@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --romance-red: #ff4d6d;
+            --dark-love: #1a0509;
+            --card-bg: #2d0a12;
+            --text: #ffffff;
+        }
+
+        body {
+            background-color: var(--dark-love);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 1. INITIAL SURPRISE SCREEN */
+        #surprise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #590d22, #1a0509);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: 1s ease-in-out;
+        }
+
+        .pop-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4.5rem;
+            color: var(--romance-red);
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
+            margin-bottom: 25px;
+            animation: heartBeat 1.5s infinite;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        .love-button {
+            padding: 20px 50px;
+            font-size: 1.4rem;
+            background: var(--romance-red);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+            transition: 0.3s ease;
+            font-weight: 600;
+        }
+
+        .love-button:hover { transform: scale(1.1); background: #ff758f; }
+
+        /* 2. REVEALED PAGE CONTENT */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.8rem;
+            color: var(--romance-red);
+            margin-bottom: 15px;
+        }
+
+        /* 3. SYNCED MEDIA BOX */
+        .card {
+            background: var(--card-bg);
+            border-radius: 35px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            margin-top: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+        }
+
+        .video-wrapper {
+            width: 100%;
+            background: #000;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+            max-height: 500px;
+        }
+
+        .info {
+            padding: 35px;
+        }
+
+        .info h3 { font-size: 1.8rem; margin-bottom: 20px; }
+
+        audio {
+            width: 100%;
+            margin-top: 15px;
+            filter: invert(1) sepia(1) saturate(5) hue-rotate(300deg);
+        }
+
+        /* FLOATING HEARTS EFFECT */
+        .heart {
+            position: fixed;
+            color: var(--romance-red);
+            animation: fly 5s linear infinite;
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.8); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="surprise-overlay">
+        <div class="pop-text">Happy Birthday, <br> My Favorite Person! ❤️</div>
+        <button class="love-button" onclick="unlock()">Click here if you love me</button>
+    </div>
+
+    <div id="main-content">
+        <header>
+            <h2>For my love...</h2>
+            <p style="color: #94a3b8; font-size: 1.1rem;">A little gift because you deserve the world.</p>
+        </header>
+
+        <div class="card">
+            <div class="video-wrapper">
+                <video id="bfVideo" src="memories.mp4" controls muted playsinline></video>
+                <p style="font-size: 13px; color: #ff758f; margin: 15px; font-weight: 300;">
+                    (Play the video to hear my special message!)
+                </p>
+            </div>
+            
+            <div class="info">
+                <h3>Our Memories</h3>
+                <audio id="bfAudio" src="myvoice.mp3" controls></audio>
+            </div>
+        </div>
+
+        <footer style="margin-top: 70px; padding-bottom: 40px; opacity: 0.7; font-size: 1rem;">
+            Created with all my love ❤️
+        </footer>
+    </div>
+
+    <script>
+        function unlock() {
+            const overlay = document.getElementById('surprise-overlay');
+            const content = document.getElementById('main-content');
+            
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                content.style.display = 'block';
+                startHearts();
+            }, 1000);
+        }
+
+        const video = document.getElementById('bfVideo');
+        const audio = document.getElementById('bfAudio');
+
+        video.onplay = function() { audio.play(); };
+        video.onpause = function() { audio.pause(); };
+        video.onseeking = function() {
+            audio.currentTime = video.currentTime;
+        };
+
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 350);
+        }
+    </script>
+</body>
+</html>
